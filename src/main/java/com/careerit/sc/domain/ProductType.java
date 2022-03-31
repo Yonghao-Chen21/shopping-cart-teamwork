@@ -1,5 +1,7 @@
 package com.careerit.sc.domain;
 
-public class ProductType {
+public enum ProductType {
 
+	electronics,books,toys,sportingGoods;
 }
+
