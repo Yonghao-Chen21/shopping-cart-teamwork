@@ -1,0 +1,7 @@
+INDEX VERSION 1.4+C:\Users\dilshad\Documents\java-code\Shopping-cat-teamwork\shopping-cart-teamwork\.metadata\.plugins\org.eclipse.wst.jsdt.core\indexes
+2353787975.index
+1459762327.index
+3741233771.index
+2489266591.index
+2761803271.index
+1269364040.index
