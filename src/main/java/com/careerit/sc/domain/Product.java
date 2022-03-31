@@ -10,12 +10,12 @@ import lombok.Builder;
 
 public class Product {
 	
-	private int Product_ID;
-	private String Product_Name;
+	private int productID;
+	private String productName;
 	private String Type;
 	private String Description;
 	private float Price;
-	private int In_stock;
+	private int inStock;
 
 }
 
