@@ -2,6 +2,7 @@ package com.careerit.sc.domain;
 
 public enum ProductType {
 
-	electronics,books,toys,sportingGoods;
+	televisions,books,toys,sporting_Goods,cellphones,music,clothing,computers,cameras;
 }
+
 
