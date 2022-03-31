@@ -1,8 +1,0 @@
-package com.careerit.sc.dao;
-
-import com.careerit.sc.domain.Product;
-
-public interface ScDAO {
-	public Product getProduct();
-	public User getUser();
-}

@@ -1,3 +1,0 @@
-INDEX VERSION 1.131
-C:\Users\dilshad\Documents\java-code\Shopping-cat-teamwork\shopping-cart-teamwork\.metadata\.plugins\org.eclipse.jst.jsp.core\jspsearch\2761803271.index
-\team-shopping-cart\src\main\java
