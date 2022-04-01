@@ -1,5 +1,10 @@
 package com.careerit.sc.domain;
 
+import lombok.Builder;
+import lombok.Data;
+
+@Builder
+@Data
 public class Product {
 	
 	private int Product_ID;
