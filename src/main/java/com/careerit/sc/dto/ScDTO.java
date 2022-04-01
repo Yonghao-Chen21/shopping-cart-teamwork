@@ -1,5 +1,10 @@
 package com.careerit.sc.dto;
 
-public class ScDTO {
+import java.util.List;
+
+import com.careerit.sc.domain.Product;
+
+public interface ScDTO {
+	
 
 }
