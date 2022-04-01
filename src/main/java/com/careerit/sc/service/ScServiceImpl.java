@@ -1,4 +1,4 @@
-package com.careerit.sc.dto;
+package com.careerit.sc.service;
 
 import java.util.List;
 
@@ -6,8 +6,8 @@ import com.careerit.sc.dao.ScDAO;
 import com.careerit.sc.dao.ScDAOimpl;
 import com.careerit.sc.domain.Product;
 
-public class ScDTOImpl implements ScDTO{
-	private ScDAO obj = ScDAOimpl.getInstance();
+public class ScServiceImpl implements ScService{
+private ScDAO obj = ScDAOimpl.getInstance();
 	
 	@Override
 	public List<String> getProduct() {
