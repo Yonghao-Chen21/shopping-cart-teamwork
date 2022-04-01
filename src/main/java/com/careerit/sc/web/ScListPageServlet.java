@@ -35,25 +35,16 @@ public class ScListPageServlet extends HttpServlet {
 			if (uri.endsWith("listpage.remove")) {
 				String removeId = req.getParameter("removeId");
 				if (removeId != null) {
-					Product product = service.getProductById(removeId);
-					service.removeProductById(removeId);
+					service.removeProductById(Integer.parseInt(removeId));
 					products = service.getAllProducts();
 					session.setAttribute("products", products);
-					session.setAttribute("removeId", removeId);
+					session.setAttribute("removeId", null);
 				}
-			} else if (uri.endsWith("listpage.add")) {
+			} else if (uri.endsWith("listpage.edit")) {
 				int editId = (int) session.getAttribute("editId");
-				if (session.getAttribute("name") != null) {
 					Product product = service.getProductById(editId);
-					String name = (String) session.getAttribute("name");
-					ProductType productType = ProductType.valueOf((String) session.getAttribute("productType"));
-					String desc = (String) session.getAttribute("desc");
-					double price = (double) session.getAttribute("price");
-					int inStock = (int) session.getAttribute("inStock");
-					Product product = Product.build();
-					service.editProduct(editId, name, productType, desc, price, inStock);
-					session.setAttribute("editId", editId);
-				}
+					session.setAttribute("editProduct", product);
+					resp.sendRedirect("edit");
 
 			} else if (uri.endsWith("listpage.bulkupdate")) {
 

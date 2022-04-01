@@ -8,20 +8,6 @@ import com.careerit.sc.domain.Product;
 
 public class ScServiceImpl implements ScService{
 private ScDAO obj = ScDAOimpl.getInstance();
-	
-	@Override
-	public List<String> getProduct() {
-		List<String> list = obj.getProduct();
-		System.out.println("Total products are: " + list.size());
-		return list;
-	}
-
-	@Override
-	public List<String> getUser() {
-		List<String> list = obj.getUser();
-		System.out.println("Total users are: " + list.size());
-		return list;
-	}
 
 	@Override
 	public List<Product> getAllProducts() {
@@ -32,9 +18,7 @@ private ScDAO obj = ScDAOimpl.getInstance();
 
 	@Override
 	public Product getProductById(int productId) {
-		Product p = obj.getProductById(productId);
-		
-		return p;
+		return obj.getProductById(productId);
 	}
 
 	@Override
@@ -45,17 +29,23 @@ private ScDAO obj = ScDAOimpl.getInstance();
 	}
 
 	@Override
-	public void editProduct(int productId, String name, String productType, String description, float price, int inStock) {
-		obj.editProduct(productId, name, productType, description, price, inStock);
+	public void editProduct(int productId, String productName, int typeId, String description, float price,
+			int inStock) {
+		obj.editProduct(productId, productName, typeId, description, price, inStock);
 		System.out.println(obj.getProductById(productId));
 	}
 
 	@Override
-	public void addProduct(int productId, String name, String productType, String description, float price, int inStock) {
+	public void addProduct(String productName, int typeId, String description, float price, int inStock) {
 		System.out.println("Size before adding product: " + obj.getAllProducts().size());
-		obj.addProduct(productId, name, productType, description, price, inStock);
+		obj.addProduct(productName, typeId, description, price, inStock);
 		System.out.println("List size after adding product " + obj.getAllProducts().size());
 		
+	}
+
+	@Override
+	public boolean loginValidate(String username, String password) {
+		return obj.loginValidate(username, password);
 	}
 
 }

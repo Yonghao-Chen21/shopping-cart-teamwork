@@ -1,10 +1,6 @@
 package com.careerit.sc.web;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -34,7 +30,7 @@ public class ScLoginServlet extends HttpServlet {
 			String pw = req.getParameter("password");
 			boolean flag = false;
 			if (name == null && pw == null) {
-				flag = service.login(name, pw);
+				flag = service.loginValidate(name, pw);
 			}
 			if (flag) {
 				session.setAttribute("name", name);
