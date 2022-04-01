@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import com.careerit.sc.domain.Product;
+import com.careerit.sc.domain.ProductType;
 import com.careerit.sc.service.ScServiceImpl;
 
 @WebServlet("listpage*")
@@ -32,13 +33,31 @@ public class ScListPageServlet extends HttpServlet {
 		session.setAttribute("products", products);
 		if (session.getAttribute("name") != null) {
 			if (uri.endsWith("listpage.remove")) {
-				String productId = req.getParameter("productId");
-				if (productId != null) {
-					products = (List<Product>) session.getAttribute("products");
-					Product product = service.getProductById(productId);
-					products.remove(product);
+				String removeId = req.getParameter("removeId");
+				if (removeId != null) {
+					Product product = service.getProductById(removeId);
+					service.removeProductById(removeId);
+					products = service.getAllProducts();
 					session.setAttribute("products", products);
+					session.setAttribute("removeId", removeId);
 				}
+			} else if (uri.endsWith("listpage.add")) {
+				int editId = (int) session.getAttribute("editId");
+				if (session.getAttribute("name") != null) {
+					Product product = service.getProductById(editId);
+					String name = (String) session.getAttribute("name");
+					ProductType productType = ProductType.valueOf((String) session.getAttribute("productType"));
+					String desc = (String) session.getAttribute("desc");
+					double price = (double) session.getAttribute("price");
+					int inStock = (int) session.getAttribute("inStock");
+					Product product = Product.build();
+					service.editProduct(editId, name, productType, desc, price, inStock);
+					session.setAttribute("editId", editId);
+				}
+
+			} else if (uri.endsWith("listpage.bulkupdate")) {
+
+			} else if (uri.endsWith("listpage.exportlist")) {
 
 			}
 			RequestDispatcher rd = req.getRequestDispatcher("/listpage.jsp");
