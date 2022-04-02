@@ -1,5 +1,6 @@
 package com.careerit.sc.dto;
 
-public class ScDTO {
+public interface ScDTO {
+	
 
 }

@@ -1,5 +1,11 @@
 package com.careerit.sc.domain;
 
-public class User {
+import lombok.Builder;
+import lombok.Data;
 
+@Data
+@Builder
+public class User {
+	private String userName;
+	private String password;	
 }

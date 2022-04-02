@@ -1,5 +1,11 @@
 package com.careerit.sc.domain;
 
-public class ProductType {
+import lombok.AllArgsConstructor;
+import lombok.Data;
 
+@Data
+@AllArgsConstructor
+public class ProductType {
+	private int id;
+	private String name;
 }
