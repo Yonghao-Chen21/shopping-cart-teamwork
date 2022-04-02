@@ -18,9 +18,9 @@ public class ScDAOimpl implements ScDAO {
 	private static final String PRODUCT_BY_ID = ALL_PRODUCT + "where product_id = ?";
 	private static final String DELETE_PRODUCT_BY_ID = "DELETE FROM products where product_id=?;";
 	private static final String EDIT_PRODUCT = "UPDATE products SET product_name = ?, product_type_id = ?, product_description = ?, price = ?, in_stock = ? where product_id = ?";
-	private static final String ADD_PRODUCT = "INSERT INTO product(product_name,product_type_id,product_description,price,in_stock) values(?,?,?,?,?)";
+	private static final String ADD_PRODUCT = "INSERT INTO products(product_name,product_type_id,product_description,price,in_stock) values(?,?,?,?,?)";
 	private static final String LOGIN = "SELECT * FROM users WHERE username = ? and password = ?";
-
+	private static final String ALL_TYPES = "SELECT * FROM product_types_master";
 	private ConnectionUtil conUtil = ConnectionUtil.obj;
 
 	private ScDAOimpl() {
@@ -54,7 +54,7 @@ public class ScDAOimpl implements ScDAO {
 				String type = rs.getString("product_type_name");
 				int typeId = rs.getInt("product_type_id");
 				String description = rs.getString("product_description");
-				float price = rs.getFloat("price");
+				double price = rs.getDouble("price");
 				int inStock = rs.getInt("in_stock");
 				Product p = Product.builder().productId(productId).productName(productName)
 						.type(new ProductType(typeId, type)).description(description).price(price).inStock(inStock)
@@ -80,14 +80,16 @@ public class ScDAOimpl implements ScDAO {
 			pst = con.prepareStatement(PRODUCT_BY_ID);
 			pst.setInt(1, productId);
 			rs = pst.executeQuery();
-			String productName = rs.getString("product_name");
-			String type = rs.getString("product_type_name");
-			int typeId = rs.getInt("product_type_id");
-			String description = rs.getString("product_description");
-			float price = rs.getFloat("price");
-			int inStock = rs.getInt("in_stock");
-			p = Product.builder().productId(productId).productName(productName).type(new ProductType(typeId, type))
-					.description(description).price(price).inStock(inStock).build();
+			while (rs.next()) {
+				String productName = rs.getString("product_name");
+				String type = rs.getString("product_type_name");
+				int typeId = rs.getInt("product_type_id");
+				String description = rs.getString("product_description");
+				double price = rs.getDouble("price");
+				int inStock = rs.getInt("in_stock");
+				p = Product.builder().productId(productId).productName(productName).type(new ProductType(typeId, type))
+						.description(description).price(price).inStock(inStock).build();
+			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
@@ -114,7 +116,7 @@ public class ScDAOimpl implements ScDAO {
 	}
 
 	@Override
-	public void editProduct(int productId, String productName, int typeId, String description, float price,
+	public void editProduct(int productId, String productName, int typeId, String description, double price,
 			int inStock) {
 		Connection con = null;
 		PreparedStatement pst = null;
@@ -124,10 +126,10 @@ public class ScDAOimpl implements ScDAO {
 			pst.setString(1, productName);
 			pst.setInt(2, typeId);
 			pst.setString(3, description);
-			pst.setFloat(4, price);
+			pst.setDouble(4, price);
 			pst.setInt(5, inStock);
 			pst.setInt(6, productId);
-			pst.executeQuery();
+			pst.execute();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
@@ -137,7 +139,7 @@ public class ScDAOimpl implements ScDAO {
 	}
 
 	@Override
-	public void addProduct(String productName, int typeId, String description, float price, int inStock) {
+	public void addProduct(String productName, int typeId, String description, double price, int inStock) {
 		Connection con = null;
 		PreparedStatement pst = null;
 		try {
@@ -146,7 +148,7 @@ public class ScDAOimpl implements ScDAO {
 			pst.setString(1, productName);
 			pst.setInt(2, typeId);
 			pst.setString(3, description);
-			pst.setFloat(4, price);
+			pst.setDouble(4, price);
 			pst.setInt(5, inStock);
 			pst.executeUpdate();
 
@@ -174,6 +176,29 @@ public class ScDAOimpl implements ScDAO {
 			ex.printStackTrace();
 		}
 		return false;
+	}
+
+	@Override
+	public List<ProductType> getAllTypes() {
+		Connection con = null;
+		Statement st = null;
+		ResultSet rs = null;
+		List<ProductType> tlist = new ArrayList<>();
+		try {
+			con = conUtil.getConnection();
+			st = con.createStatement();
+			rs = st.executeQuery(ALL_TYPES);
+			while (rs.next()) {
+				int typeId = rs.getInt("product_type_id");
+				String type = rs.getString("product_type_name");
+				tlist.add(new ProductType(typeId, type));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			conUtil.close(rs, st, con);
+		}
+		return tlist;
 	}
 
 }

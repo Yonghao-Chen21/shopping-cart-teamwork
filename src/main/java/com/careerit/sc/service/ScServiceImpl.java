@@ -1,13 +1,16 @@
 package com.careerit.sc.service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.careerit.sc.dao.ScDAO;
 import com.careerit.sc.dao.ScDAOimpl;
 import com.careerit.sc.domain.Product;
+import com.careerit.sc.domain.ProductType;
 
-public class ScServiceImpl implements ScService{
-private ScDAO obj = ScDAOimpl.getInstance();
+public class ScServiceImpl implements ScService {
+	private ScDAO obj = ScDAOimpl.getInstance();
 
 	@Override
 	public List<Product> getAllProducts() {
@@ -29,23 +32,41 @@ private ScDAO obj = ScDAOimpl.getInstance();
 	}
 
 	@Override
-	public void editProduct(int productId, String productName, int typeId, String description, float price,
+	public void editProduct(int productId, String productName, String type, String description, double price,
 			int inStock) {
-		obj.editProduct(productId, productName, typeId, description, price, inStock);
+		List<ProductType> tlist = getAllTypes();
+		Map<String,Integer> map = new HashMap<>();
+		tlist.stream().forEach(t->map.put(t.getName(), t.getId()));
+		obj.editProduct(productId, productName, map.get(type), description, price, inStock);
 		System.out.println(obj.getProductById(productId));
 	}
 
 	@Override
-	public void addProduct(String productName, int typeId, String description, float price, int inStock) {
+	public void addProduct(String productName, String type, String description, double price, int inStock) {
+		List<ProductType> tlist = getAllTypes();
+		Map<String,Integer> map = new HashMap<>();
+		tlist.stream().forEach(t->map.put(t.getName(), t.getId()));
 		System.out.println("Size before adding product: " + obj.getAllProducts().size());
-		obj.addProduct(productName, typeId, description, price, inStock);
+		obj.addProduct(productName, map.get(type), description, price, inStock);
 		System.out.println("List size after adding product " + obj.getAllProducts().size());
-		
+
 	}
 
 	@Override
 	public boolean loginValidate(String username, String password) {
-		return obj.loginValidate(username, password);
+		boolean flag = obj.loginValidate(username, password);
+		System.out.println(flag);
+		return flag;
+	}
+
+	@Override
+	public List<ProductType> getAllTypes() {
+		return obj.getAllTypes();
+	}
+	
+	public static void main(String[] args) {
+		ScServiceImpl obj = new ScServiceImpl();
+		obj.editProduct(4, "LG OLED C1 Series 65 TV", "books", "Alexa Built-in 4k Smart TV", 1799.99, 10);
 	}
 
 }

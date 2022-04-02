@@ -1,6 +1,7 @@
 package com.careerit.sc.web;
 
 import java.io.IOException;
+
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -9,14 +10,14 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import com.careerit.sc.domain.Product;
 import com.careerit.sc.service.ScServiceImpl;
 
-@WebServlet("log*")
-public class ScLoginServlet extends HttpServlet {
-
+@WebServlet("*.view")
+public class ViewPageServlet extends HttpServlet {
 	private ScServiceImpl service = new ScServiceImpl();
 
-	public ScLoginServlet() {
+	public ViewPageServlet() {
 
 	}
 
@@ -25,25 +26,15 @@ public class ScLoginServlet extends HttpServlet {
 
 		HttpSession session = req.getSession();
 		String uri = req.getRequestURI();
-		if (uri.endsWith("login")) {
-			String name = req.getParameter("name");
-			String pw = req.getParameter("password");
-			boolean flag = false;
-			if (name == null && pw == null) {
-				flag = service.loginValidate(name, pw);
-			}
-			if (flag) {
-				session.setAttribute("name", name);
-			}
-
-		} else if (uri.endsWith("logout")) {
-			if (session.getAttribute("name") != null) {
-				session.invalidate();
-				resp.sendRedirect("login");
-				return;
-			}
+		int viewId = Integer.parseInt(req.getParameter("viewId"));
+		RequestDispatcher rd = null;
+		if (session.getAttribute("username") != null) {
+			Product product = service.getProductById(viewId);
+			session.setAttribute("product", product);
+			rd = req.getRequestDispatcher("/view.jsp");
+		} else {
+			rd = req.getRequestDispatcher("/index.jsp");
 		}
-		RequestDispatcher rd = req.getRequestDispatcher("/login.jsp");
 		rd.forward(req, resp);
 
 	}
@@ -52,4 +43,5 @@ public class ScLoginServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		doGet(req, resp);
 	}
+
 }
